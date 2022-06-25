@@ -15,26 +15,10 @@ def get_nums(file):
 
 def factorize(n):
     """factorize a number"""
-    result = [1]
-    if n % 2 == 0:
-        result = [2] + factorize(n // 2)
-        return result
-    else:
-        sqr = int(math.sqrt(n)) + 1
-        for i in range(3, sqr, 2):
-            if n % i == 0:
-                result = [i] + factorize(n // i)
-                return result
-            if n % (sqr - i) == 0:
-                result = [i, sqr - i]
-                result += factorize(n // (i + (sqr - i)))
-                return result
-            if n % (sqr + i) == 0:
-                result = [i, sqr + i]
-                result += factorize(n // (i + (sqr + i)))
-                return result
-        result = [n]
-        return result
+    x = 2
+    while n % x:
+        x += 1
+    print("{:.0f}={:.0f}*{:.0f}".format(n, n / x, x))
 
 
 def main(args):
@@ -44,8 +28,7 @@ def main(args):
         sys.exit(1)
     nums = get_nums(args[1])
     for n in nums:
-        factors = factorize(n)
-        print("{} = {}".format(n, " * ".join(map(str, factors))))
+        factorize(n) 
 
 
 if __name__ == "__main__":
