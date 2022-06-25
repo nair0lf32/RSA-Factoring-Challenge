@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+import sys
+import math
+"""Factorizes as many numbers as possible into a product of 2 smaller nums"""
+
+
+def is_prime(num):
+    """checks if num is a prime number"""
+    i = 3
+    if num % 2 == 0:
+        return False
+    while i * i <= num:
+        if num % i == 0:
+            return False
+        i += 2
+    return True
+
+
+def get_nums(file):
+    """gets the numbers from file"""
+    nums = []
+    with open(file, encoding='utf-8') as f:
+        for line in f.readlines():
+            nums += int(line)
+    return nums
+
+
+def factorize(n):
+    """factorize a number"""
+    i = 2
+    if n < i:
+        return
+    while n % i:
+        if is_prime(n):
+            print("{:.0f}={:.0f}*{:.0f}".format(n, n / i, i))
+
+
+def main(args):
+    """entry point"""
+    if len(args) != 2:
+        print("Usage: factors.py <file>")
+        sys.exit(1)
+    nums = get_nums(args[1])
+    for n in nums:
+        factorize(n)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
