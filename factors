@@ -5,44 +5,48 @@ import math
 
 
 def get_nums(file):
-    """gets the factors of a number"""
-    with open(file) as f:
-        return [int(line.strip()) for line in f.readlines()]
+    """gets the numbers from file"""
+    nums = []
+    with open(file, encoding='utf-8') as f:
+        for line in f.readlines():
+            nums += int(line)
+    return nums
 
 
 def factorize(n):
-    res = []
     """factorize a number"""
+    result = [1]
     if n % 2 == 0:
-        res = [2] + factorize(n // 2)
-        return res
+        result = [2] + factorize(n // 2)
+        return result
     else:
-        square_root = int(math.sqrt(n)) + 1
-        for i in range(3, square_root, 2):
+        sqr = int(math.sqrt(n)) + 1
+        for i in range(3, sqr, 2):
             if n % i == 0:
-                res = [i] + factorize(n // i)
-                return res
-            if n % (square_root - i) == 0:
-                res = [i, square_root - i]
-                res += factorize(n // (i + (square_root - i)))
-                return res
-            if n % (square_root + i) == 0:
-                res = [i, square_root + i]
-                res += factorize(n // (i + (square_root + i)))
-                return res
-        return [n]
+                result = [i] + factorize(n // i)
+                return result
+            if n % (sqr - i) == 0:
+                result = [i, sqr - i]
+                result += factorize(n // (i + (sqr - i)))
+                return result
+            if n % (sqr + i) == 0:
+                result = [i, sqr + i]
+                result += factorize(n // (i + (sqr + i)))
+                return result
+        result = [n]
+        return result
 
 
-def main():
+def main(args):
     """entry point"""
-    if len(sys.argv) != 2:
+    if len(args) != 2:
         print("Usage: factors.py <file>")
         sys.exit(1)
-    nums = get_nums(sys.argv[1])
+    nums = get_nums(args[1])
     for n in nums:
         factors = factorize(n)
         print("{} = {}".format(n, " * ".join(map(str, factors))))
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
